@@ -1,25 +1,24 @@
 package com.meightsoft.crudexample.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import jakarta.validation.constraints.NotNull;
 
 @Data
 @Builder
-@NoArgsConstructor
+@RequiredArgsConstructor
 @AllArgsConstructor
 public class Restaurant {
 
-    // TODO validation annotations
-
     private Long id;
 
+    @NotNull
     private String name;
 
+    @NotNull
     private String address;
 
+    @NotNull
     private String phoneNumber;
 
-    private Boolean isVegan;
+    private Boolean isVegan = false;
 }

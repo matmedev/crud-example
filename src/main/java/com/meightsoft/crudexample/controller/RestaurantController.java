@@ -4,6 +4,7 @@ import com.meightsoft.crudexample.exceptions.EntityNotFoundException;
 import com.meightsoft.crudexample.facade.RestaurantOrderFacade;
 import com.meightsoft.crudexample.model.Restaurant;
 import com.meightsoft.crudexample.service.RestaurantService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -25,11 +26,11 @@ public class RestaurantController {
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public Restaurant create(@RequestBody Restaurant restaurant) {
+    public Restaurant create(@RequestBody @Valid Restaurant restaurant) {
         log.debug("RestaurantController::create [restaurant={}]", restaurant);
 
         try {
-            return restaurantService.create(restaurant);
+            return restaurantService.save(restaurant);
         } catch (Exception e) {
             log.error("An unexpected error occurred!", e);
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Unexpected error!", e);
@@ -67,16 +68,13 @@ public class RestaurantController {
 
     @PutMapping(path = "/{restaurantId}", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public Restaurant update(@PathVariable Long restaurantId, @RequestBody Restaurant restaurant) {
+    public Restaurant update(@PathVariable Long restaurantId, @RequestBody @Valid Restaurant restaurant) {
         log.debug("RestaurantController::update [restaurantId={}, restaurant={}]", restaurantId, restaurant);
 
         restaurant.setId(restaurantId);
 
         try {
-            return restaurantService.update(restaurant);
-        } catch (EntityNotFoundException e) {
-            log.error("The specified item doesn't exist", e);
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+            return restaurantService.save(restaurant);
         } catch (Exception e) {
             log.error("An unexpected error occurred!", e);
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Unexpected error!", e);

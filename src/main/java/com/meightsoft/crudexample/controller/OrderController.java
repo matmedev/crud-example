@@ -5,6 +5,7 @@ import com.meightsoft.crudexample.exceptions.EntityNotFoundException;
 import com.meightsoft.crudexample.facade.RestaurantOrderFacade;
 import com.meightsoft.crudexample.model.Order;
 import com.meightsoft.crudexample.service.OrderService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -26,7 +27,7 @@ public class OrderController {
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public Order create(@PathVariable Long restaurantId, @RequestBody Order order) {
+    public Order create(@PathVariable Long restaurantId, @RequestBody @Valid Order order) {
         log.debug("OrderController::create [restaurantId={}, order={}]", restaurantId, order);
 
         order.setStatus(OrderStatus.PENDING);
@@ -73,7 +74,7 @@ public class OrderController {
 
     @PutMapping(path = "/{orderId}", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public Order update(@PathVariable Long restaurantId, @PathVariable Long orderId, @RequestBody Order order) {
+    public Order update(@PathVariable Long restaurantId, @PathVariable Long orderId, @RequestBody @Valid Order order) {
         log.debug("OrderController::update [restaurantId={}, orderId={}, order={}]", restaurantId, orderId, order);
 
         order.setId(orderId);

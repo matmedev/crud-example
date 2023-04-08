@@ -6,8 +6,6 @@ import com.meightsoft.crudexample.exceptions.EntityNotFoundException;
 import com.meightsoft.crudexample.mapper.mapstruct.OrderMapper;
 import com.meightsoft.crudexample.model.Order;
 import com.meightsoft.crudexample.persistence.repository.OrderRepository;
-import com.meightsoft.crudexample.validator.OrderValidator;
-import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -20,13 +18,13 @@ import java.util.stream.StreamSupport;
 @AllArgsConstructor
 public class OrderService {
 
+    // TODO FetchType lazy -  add @Transactional - ???
+
     private final OrderMapper orderMapper;
     private final OrderRepository orderRepository;
-    private final OrderValidator orderValidator;
-    private final RestaurantService restaurantService;
 
     // TODO CreateOrderDto (with restaurantId) + findById
-    public Order create(Order order) throws EntityNotFoundException {
+    public Order create(Order order) {
         log.debug("OrderService::create [order={}]", order);
 
         var orderEntity = orderMapper.toEntity(order);
@@ -35,23 +33,17 @@ public class OrderService {
         return orderMapper.toModel(orderEntity);
     }
 
-    // TODO add
-    //    @Transactional
-
     public Order get(Long orderId) throws EntityNotFoundException {
         log.debug("OrderService::get [orderId={}]", orderId);
 
-        orderValidator.validateOnGet(orderId);
+        var optionalOrderEntity = orderRepository.findById(orderId);
+        var orderEntity = optionalOrderEntity.orElseThrow(() -> new EntityNotFoundException("Order not found"));
 
-        var optionalOrder = orderRepository.findById(orderId);
-
-        return orderMapper.toModel(optionalOrder.get());
+        return orderMapper.toModel(orderEntity);
     }
 
     public List<Order> listByRestaurantId(Long restaurantId) throws EntityNotFoundException {
         log.debug("OrderService::listByRestaurantId [restaurantId={}]", restaurantId);
-
-        orderValidator.validateOnListByRestaurantId(restaurantId);
 
         var orders = orderRepository.findAllByRestaurantId(restaurantId);
 
@@ -63,8 +55,6 @@ public class OrderService {
     public Order update(Order order) throws EntityNotFoundException {
         log.debug("OrderService::update [order={}]", order);
 
-        orderValidator.validateOnUpdate(order);
-
         var optionalOrder = orderRepository.findById(order.getId());
         var orderEntity = orderMapper.updateEntity(optionalOrder.get(), order);
         orderEntity = orderRepository.save(orderEntity);
@@ -75,7 +65,7 @@ public class OrderService {
     public Order updateStatus(Long orderId, OrderStatus status) throws EntityNotFoundException {
         log.debug("OrderService::updateStatus [orderId={}, status={}]", orderId, status);
 
-        orderValidator.validateOnUpdateStatus(orderId, status);
+        // TODO validation
 
         var optionalOrder = orderRepository.findById(orderId);
         var orderEntity = orderMapper.updateEntity(optionalOrder.get(), Order.builder().status(status).build());
@@ -86,8 +76,6 @@ public class OrderService {
 
     public void delete(Long orderId) throws EntityNotFoundException {
         log.debug("OrderService::delete [orderId={}]", orderId);
-
-        orderValidator.validateOnDelete(orderId);
 
         orderRepository.deleteById(orderId);
     }

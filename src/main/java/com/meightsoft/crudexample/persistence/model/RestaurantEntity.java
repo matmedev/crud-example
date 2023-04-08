@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @Entity
 @Builder(toBuilder = true)
@@ -24,4 +26,7 @@ public class RestaurantEntity {
     private String phoneNumber;
 
     private Boolean isVegan;
+
+    @OneToMany(fetch = FetchType.LAZY)
+    private List<OrderEntity> orders;
 }
