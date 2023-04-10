@@ -51,9 +51,9 @@ public class RestaurantService {
     public void delete(Long restaurantId) throws EntityNotFoundException {
         log.debug("RestaurantService::delete [restaurantId={}]", restaurantId);
 
-        try {
+        if (restaurantRepository.existsById(restaurantId)) {
             restaurantRepository.deleteById(restaurantId);
-        } catch (EmptyResultDataAccessException e) {
+        } else {
             throw new EntityNotFoundException("Restaurant not found");
         }
     }

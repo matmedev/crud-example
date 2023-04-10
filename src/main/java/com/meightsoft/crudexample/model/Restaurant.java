@@ -1,23 +1,26 @@
 package com.meightsoft.crudexample.model;
 
-import lombok.*;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 @Data
-@Builder
+@Builder(toBuilder = true)
 @RequiredArgsConstructor
 @AllArgsConstructor
 public class Restaurant {
 
     private Long id;
 
-    @NotNull
+    @NotBlank
     private String name;
 
-    @NotNull
+    @NotBlank
     private String address;
 
-    @NotNull
+    @NotBlank
     private String phoneNumber;
 
     private Boolean isVegan = false;

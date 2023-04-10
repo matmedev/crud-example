@@ -27,7 +27,7 @@ public class OrderController {
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public Order create(@PathVariable Long restaurantId, @RequestBody @Valid Order order) {
+    public Order create(@PathVariable Long restaurantId, @Valid @RequestBody Order order) {
         log.debug("OrderController::create [restaurantId={}, order={}]", restaurantId, order);
 
         order.setStatus(OrderStatus.PENDING);
