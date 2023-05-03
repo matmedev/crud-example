@@ -30,8 +30,6 @@ public class OrderController {
     public Order create(@PathVariable Long restaurantId, @Valid @RequestBody Order order) {
         log.debug("OrderController::create [restaurantId={}, order={}]", restaurantId, order);
 
-        order.setStatus(OrderStatus.PENDING);
-
         try {
             return restaurantOrderFacade.createOrder(order, restaurantId);
         } catch (Exception e) {
@@ -97,6 +95,22 @@ public class OrderController {
 
         try {
             orderService.delete(orderId);
+        } catch (EntityNotFoundException e) {
+            log.error("The specified item doesn't exist", e);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+        } catch (Exception e) {
+            log.error("An unexpected error occurred!", e);
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Unexpected error!", e);
+        }
+    }
+
+    @PostMapping(path = "/{orderId}/update-status")
+    @ResponseStatus(HttpStatus.OK)
+    public Order updateStatus(@PathVariable Long restaurantId, @PathVariable Long orderId, @RequestParam OrderStatus status) {
+        log.debug("OrderStatusController::update [restaurantId={}, orderId={}]", restaurantId, orderId);
+
+        try {
+            return orderService.updateStatus(orderId, status);
         } catch (EntityNotFoundException e) {
             log.error("The specified item doesn't exist", e);
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);

@@ -3,7 +3,7 @@ package com.meightsoft.crudexample.service;
 
 import com.meightsoft.crudexample.constants.OrderStatus;
 import com.meightsoft.crudexample.exceptions.EntityNotFoundException;
-import com.meightsoft.crudexample.mapper.mapstruct.OrderMapper;
+import com.meightsoft.crudexample.mapper.OrderMapper;
 import com.meightsoft.crudexample.model.Order;
 import com.meightsoft.crudexample.persistence.repository.OrderRepository;
 import lombok.AllArgsConstructor;
@@ -17,15 +17,13 @@ import java.util.stream.StreamSupport;
 @Service
 @AllArgsConstructor
 public class OrderService {
-
-    // TODO FetchType lazy -  add @Transactional - ???
-
     private final OrderMapper orderMapper;
     private final OrderRepository orderRepository;
 
-    // TODO CreateOrderDto (with restaurantId) + findById
     public Order create(Order order) {
         log.debug("OrderService::create [order={}]", order);
+
+        order.setStatus(OrderStatus.PENDING);
 
         var orderEntity = orderMapper.toEntity(order);
         orderEntity = orderRepository.save(orderEntity);

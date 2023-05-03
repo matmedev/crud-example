@@ -1,4 +1,4 @@
-package com.meightsoft.crudexample.mapper.mapstruct;
+package com.meightsoft.crudexample.mapper;
 
 import com.meightsoft.crudexample.model.Restaurant;
 import com.meightsoft.crudexample.persistence.model.RestaurantEntity;

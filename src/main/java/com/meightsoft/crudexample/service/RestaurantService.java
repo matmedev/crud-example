@@ -1,12 +1,11 @@
 package com.meightsoft.crudexample.service;
 
 import com.meightsoft.crudexample.exceptions.EntityNotFoundException;
-import com.meightsoft.crudexample.mapper.mapstruct.RestaurantMapper;
+import com.meightsoft.crudexample.mapper.RestaurantMapper;
 import com.meightsoft.crudexample.model.Restaurant;
 import com.meightsoft.crudexample.persistence.repository.RestaurantRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
