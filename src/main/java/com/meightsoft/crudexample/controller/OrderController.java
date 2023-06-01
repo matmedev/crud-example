@@ -5,6 +5,11 @@ import com.meightsoft.crudexample.exceptions.EntityNotFoundException;
 import com.meightsoft.crudexample.facade.RestaurantOrderFacade;
 import com.meightsoft.crudexample.model.Order;
 import com.meightsoft.crudexample.service.OrderService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +30,20 @@ public class OrderController {
     private final OrderService orderService;
     private final RestaurantOrderFacade restaurantOrderFacade;
 
+    @Operation(summary = "Create a new order")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "201",
+                    description = "Order created",
+                    content = @Content(
+                            mediaType = APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = Order.class)
+                    )
+            ),
+            @ApiResponse(responseCode = "400", description = "Invalid order data", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Restaurant not found", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Unexpected error", content = @Content)
+    })
     @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public Order create(@PathVariable Long restaurantId, @Valid @RequestBody Order order) {
