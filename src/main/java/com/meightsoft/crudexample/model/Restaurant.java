@@ -24,4 +24,6 @@ public class Restaurant {
     private String phoneNumber;
 
     private Boolean isVegan = false;
+
+    private Boolean isOnWolt = false;
 }

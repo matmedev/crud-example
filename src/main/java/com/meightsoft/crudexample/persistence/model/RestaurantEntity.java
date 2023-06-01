@@ -10,6 +10,7 @@ import java.util.List;
 
 @Data
 @Entity
+@Table(name = "restaurants")
 @Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
@@ -26,6 +27,8 @@ public class RestaurantEntity {
     private String phoneNumber;
 
     private Boolean isVegan;
+
+    private Boolean isOnWolt;
 
     @OneToMany(fetch = FetchType.LAZY)
     private List<OrderEntity> orders;

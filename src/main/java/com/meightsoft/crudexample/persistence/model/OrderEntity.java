@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Entity
+@Table(name = "orders")
 @Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
