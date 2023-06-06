@@ -9,10 +9,16 @@ services:
       POSTGRES_PASSWORD: SomeSecretPassword
       PGDATA: /data/postgres
     volumes:
-      - postgres-db:/data/postgres
+      - ./postgres-data:/data/postgres
+      - ./docker_postgres_init.sql:/docker-entrypoint-initdb.d/docker_postgres_init.sql
     ports:
       - "5432:5432"
-
-volumes:
-  postgres-db:
-    driver: local
+  webapp:
+    container_name: webapp-crud
+    image: matesz-teaching/docker-java-crud:latest
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/restaurant_app
+    depends_on:
+      - postgres
