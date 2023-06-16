@@ -1,6 +1,5 @@
 package com.meightsoft.crudexample.controller;
 
-import com.meightsoft.crudexample.constants.OrderStatus;
 import com.meightsoft.crudexample.exceptions.EntityNotFoundException;
 import com.meightsoft.crudexample.facade.RestaurantOrderFacade;
 import com.meightsoft.crudexample.model.Order;
@@ -46,7 +45,7 @@ public class OrderController {
     })
     @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public Order create(@PathVariable Long restaurantId, @Valid @RequestBody Order order) {
+    public Order create(@PathVariable String restaurantId, @Valid @RequestBody Order order) {
         log.debug("OrderController::create [restaurantId={}, order={}]", restaurantId, order);
 
         try {
@@ -59,7 +58,7 @@ public class OrderController {
 
     @GetMapping(path = "/{orderId}", produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public Order get(@PathVariable Long restaurantId, @PathVariable Long orderId) {
+    public Order get(@PathVariable String restaurantId, @PathVariable String orderId) {
         log.debug("OrderController::get [restaurantId={}, orderId={}]", restaurantId, orderId);
 
         try {
@@ -75,14 +74,11 @@ public class OrderController {
 
     @GetMapping(produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public List<Order> list(@PathVariable Long restaurantId) {
+    public List<Order> list(@PathVariable String restaurantId) {
         log.debug("OrderController::list [restaurantId={}]", restaurantId);
 
         try {
             return orderService.listByRestaurantId(restaurantId);
-        } catch (EntityNotFoundException e) {
-            log.error("The specified item doesn't exist", e);
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
         } catch (Exception e) {
             log.error("An unexpected error occurred!", e);
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Unexpected error!", e);
@@ -91,7 +87,7 @@ public class OrderController {
 
     @PutMapping(path = "/{orderId}", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public Order update(@PathVariable Long restaurantId, @PathVariable Long orderId, @RequestBody @Valid Order order) {
+    public Order update(@PathVariable String restaurantId, @PathVariable String orderId, @RequestBody @Valid Order order) {
         log.debug("OrderController::update [restaurantId={}, orderId={}, order={}]", restaurantId, orderId, order);
 
         order.setId(orderId);
@@ -109,7 +105,7 @@ public class OrderController {
 
     @DeleteMapping(path = "/{orderId}")
     @ResponseStatus(HttpStatus.OK)
-    public void delete(@PathVariable Long restaurantId, @PathVariable Long orderId) {
+    public void delete(@PathVariable String restaurantId, @PathVariable String orderId) {
         log.debug("OrderController::delete [restaurantId={}, orderId={}]", restaurantId, orderId);
 
         try {
@@ -123,13 +119,13 @@ public class OrderController {
         }
     }
 
-    @PostMapping(path = "/{orderId}/update-status")
+    @PostMapping(path = "/{orderId}/next-status")
     @ResponseStatus(HttpStatus.OK)
-    public Order updateStatus(@PathVariable Long restaurantId, @PathVariable Long orderId, @RequestParam OrderStatus status) {
+    public Order updateStatus(@PathVariable String restaurantId, @PathVariable String orderId) {
         log.debug("OrderStatusController::update [restaurantId={}, orderId={}]", restaurantId, orderId);
 
         try {
-            return orderService.updateStatus(orderId, status);
+            return orderService.updateStatus(orderId);
         } catch (EntityNotFoundException e) {
             log.error("The specified item doesn't exist", e);
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);

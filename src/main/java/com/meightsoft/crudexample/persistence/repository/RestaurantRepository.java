@@ -1,8 +1,7 @@
 package com.meightsoft.crudexample.persistence.repository;
 
-import com.meightsoft.crudexample.persistence.model.RestaurantEntity;
-import org.springframework.data.repository.CrudRepository;
+import com.meightsoft.crudexample.persistence.model.RestaurantDocument;
+import org.springframework.data.mongodb.repository.MongoRepository;
 
-public interface RestaurantRepository extends CrudRepository<RestaurantEntity, Long> {
-
+public interface RestaurantRepository extends MongoRepository<RestaurantDocument, String> {
 }

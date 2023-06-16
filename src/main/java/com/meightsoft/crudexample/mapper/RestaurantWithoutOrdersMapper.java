@@ -5,11 +5,12 @@ import com.meightsoft.crudexample.persistence.model.RestaurantDocument;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring", uses = {OrderMapper.class})
-public interface RestaurantMapper {
-    @Mapping(target = "createdDate", ignore = true)
-    @Mapping(target = "lastModifiedDate", ignore = true)
+@Mapper(componentModel = "spring")
+public interface RestaurantWithoutOrdersMapper {
+
+    @Mapping(target = "orders", ignore = true)
     RestaurantDocument toDocument(Restaurant restaurant);
 
+    @Mapping(target = "orders", ignore = true)
     Restaurant toModel(RestaurantDocument restaurantDocument);
 }

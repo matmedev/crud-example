@@ -4,7 +4,6 @@ import com.meightsoft.crudexample.exceptions.EntityNotFoundException;
 import com.meightsoft.crudexample.model.Order;
 import com.meightsoft.crudexample.service.OrderService;
 import com.meightsoft.crudexample.service.RestaurantService;
-import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -17,7 +16,7 @@ public class RestaurantOrderFacade {
     private final RestaurantService restaurantService;
     private final OrderService orderService;
 
-    public Order createOrder(Order order, Long restaurantId) throws EntityNotFoundException {
+    public Order createOrder(Order order, String restaurantId) throws EntityNotFoundException {
         log.debug("RestaurantOrderFacade::createOrder [order={}, restaurantId={}]", order, restaurantId);
 
         var restaurant = restaurantService.get(restaurantId);
@@ -26,8 +25,7 @@ public class RestaurantOrderFacade {
         return orderService.create(order);
     }
 
-    @Transactional
-    public void deleteRestaurant(Long restaurantId) throws EntityNotFoundException {
+    public void deleteRestaurant(String restaurantId) throws EntityNotFoundException {
         log.debug("RestaurantOrderFacade::deleteRestaurant [restaurantId={}]", restaurantId);
 
         restaurantService.delete(restaurantId);

@@ -6,13 +6,16 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 @Data
 @Builder(toBuilder = true)
 @RequiredArgsConstructor
 @AllArgsConstructor
 public class Restaurant {
 
-    private Long id;
+    private String id;
 
     @NotBlank
     private String name;
@@ -26,4 +29,9 @@ public class Restaurant {
     private Boolean isVegan = false;
 
     private Boolean isOnWolt = false;
+
+    private List<Order> orders;
+
+    private LocalDateTime createdDate;
+    private LocalDateTime lastModifiedDate;
 }

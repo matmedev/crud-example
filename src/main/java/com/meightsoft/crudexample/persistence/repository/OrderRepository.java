@@ -1,11 +1,13 @@
 package com.meightsoft.crudexample.persistence.repository;
 
-import com.meightsoft.crudexample.persistence.model.OrderEntity;
-import org.springframework.data.repository.CrudRepository;
+import com.meightsoft.crudexample.persistence.model.OrderDocument;
+import org.springframework.data.mongodb.repository.MongoRepository;
 
-public interface OrderRepository extends CrudRepository<OrderEntity, Long> {
+import java.util.List;
 
-    Iterable<OrderEntity> findAllByRestaurantId(Long restaurantId);
+public interface OrderRepository extends MongoRepository<OrderDocument, String> {
 
-    void deleteAllByRestaurantId(Long restaurantId);
+    List<OrderDocument> findAllByRestaurantId(String restaurantId);
+
+    void deleteAllByRestaurantId(String restaurantId);
 }

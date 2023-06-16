@@ -39,7 +39,7 @@ public class RestaurantController {
 
     @GetMapping(path = "/{restaurantId}", produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public Restaurant get(@PathVariable Long restaurantId) {
+    public Restaurant get(@PathVariable String restaurantId) {
         log.debug("RestaurantController::get [restaurantId={}]", restaurantId);
 
         try {
@@ -68,7 +68,7 @@ public class RestaurantController {
 
     @PutMapping(path = "/{restaurantId}", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public Restaurant update(@PathVariable Long restaurantId, @RequestBody @Valid Restaurant restaurant) {
+    public Restaurant update(@PathVariable String restaurantId, @RequestBody @Valid Restaurant restaurant) {
         log.debug("RestaurantController::update [restaurantId={}, restaurant={}]", restaurantId, restaurant);
 
         restaurant.setId(restaurantId);
@@ -83,7 +83,7 @@ public class RestaurantController {
 
     @DeleteMapping(path = "/{restaurantId}")
     @ResponseStatus(HttpStatus.OK)
-    public void delete(@PathVariable Long restaurantId) {
+    public void delete(@PathVariable String restaurantId) {
         log.debug("RestaurantController::delete [restaurantId={}]", restaurantId);
 
         try {
