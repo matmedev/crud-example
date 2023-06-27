@@ -1,0 +1,16 @@
+enum OrderStatus {
+    PENDING
+    ACCEPTED
+    IN_DELIVERY
+    DELIVERED
+}
+
+type Order {
+    id: ID!
+    address: String!
+    price: Float!
+    status: OrderStatus!
+    restaurant: Restaurant!
+    createdDate: LocalDateTime!
+    lastModifiedDate: LocalDateTime!
+}

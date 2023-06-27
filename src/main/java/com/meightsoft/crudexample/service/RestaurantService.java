@@ -8,6 +8,9 @@ import java.util.List;
 public interface RestaurantService {
 
     Restaurant save(Restaurant restaurant);
+
+    boolean exists(String restaurantId);
+
     Restaurant get(String restaurantId) throws EntityNotFoundException;
 
     List<Restaurant> list();

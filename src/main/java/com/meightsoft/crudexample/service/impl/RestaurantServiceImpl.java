@@ -31,6 +31,11 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
 
     @Override
+    public boolean exists(String restaurantId) {
+        return restaurantRepository.existsById(restaurantId);
+    }
+
+    @Override
     public Restaurant get(String restaurantId) throws EntityNotFoundException {
         log.debug("RestaurantService::get [restaurantId={}]", restaurantId);
 

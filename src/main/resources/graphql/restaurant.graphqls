@@ -1,0 +1,32 @@
+scalar LocalDateTime
+
+type Restaurant {
+    id: ID!
+    name: String!
+    address: String!
+    phoneNumber: String!
+    isVegan: Boolean
+    isOnWolt: Boolean
+    orders: [Order!]!
+    createdDate: LocalDateTime!
+    lastModifiedDate: LocalDateTime!
+}
+
+input RestaurantInput {
+    name: String!
+    address: String!
+    phoneNumber: String!
+    isVegan: Boolean
+    isOnWolt: Boolean
+}
+
+type Query {
+    restaurants: [Restaurant!]!
+    restaurant(id: ID!): Restaurant
+}
+
+type Mutation {
+    createRestaurant(restaurant: RestaurantInput!): Restaurant!
+    updateRestaurant(id: ID!, restaurant: RestaurantInput!): Restaurant!
+    deleteRestaurant(id: ID!): Restaurant!
+}
